@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SharpSiteClone.Data.Postgres.Migration\SharpSiteClone.Data.Postgres.Migration.csproj" />
     <ProjectReference Include="..\SharpSiteClone.Web\SharpSiteClone.Web.csproj" />
     <ProjectReference Include="..\SharpSiteClone.Data.Postgres\SharpSiteClone.Data.Postgres.csproj" IsAspireProjectResource="false" />
   </ItemGroup>

@@ -8,6 +8,10 @@ var dbServer = builder.AddPostgres("database")
 // create the db in postgres
 var db = dbServer.AddDatabase(SharpSiteClone.Data.Postgres.Constants.DBNAME);
 
+var migrationSvc = builder.AddProject<Projects.SharpSiteClone_Data_Postgres_Migration>("migrationsvc")
+    .WithReference(db)
+    .WaitFor(dbServer);
+
 builder.AddProject<Projects.SharpSiteClone_Web>("webfrontend")
     .WithReference(db)
     // .WaitFor(migrationSvc)
