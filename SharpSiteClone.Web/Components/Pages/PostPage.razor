@@ -1,0 +1,34 @@
+﻿@page "/{urldate:int}/{slug}"
+@using Markdig
+@using Microsoft.Extensions.Localization
+@inject IPostRepository PostService
+@* @inject IStringLocalizer<SharedResource> Localizer *@
+
+@if (Post is not null)
+{
+    <h1>@Post.Title</h1>
+    <h6>@Post.PublishedDate.LocalDateTime</h6>
+    <p>@((MarkupString)Markdown.ToHtml(Post.Content))</p>
+@* } *@
+@* else *@
+@* { *@
+@*     <p>@Localizer["sharpsite_pagenotfound"]</p> *@
+}
+
+<hr />
+<a href="/">Back to Home</a>
+
+@code {
+    [Parameter] public int UrlDate { get; set; }
+    [Parameter] public required string Slug { get; set; }
+    private Post? Post { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Post = await PostService.GetPost(UrlDate.ToString(), Slug);
+
+        // todo: 404 if Post is null
+
+
+    }
+}
