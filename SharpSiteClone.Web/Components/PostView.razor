@@ -1,4 +1,4 @@
-﻿<h2><a href="/post/@Item.Slug">@Item.Title</a></h2>
+﻿<h2><a href="@Item.ToUrl()">@Item.Title</a></h2>
 <h4>@Item.PublishedDate.LocalDateTime.ToShortDateString()</h4>
 
 @code {
