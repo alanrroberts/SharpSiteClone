@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SharpSiteClone.Abstractions;
 // ReSharper disable InconsistentNaming
@@ -7,13 +8,25 @@ namespace SharpSiteClone.Data.Postgres;
 
 public class PgPostRepository(PgContext Context) : IPostRepository
 {
-    public async Task<Post?> GetPost(string slug)
+    public async Task<Post?> GetPost(string dateString, string slug)
     {
+
+        if (string.IsNullOrEmpty(dateString) || string.IsNullOrEmpty(slug))
+        {
+            return null;
+        }
+
+        var theDate = DateTimeOffset.ParseExact(dateString, "yyyyMMdd", CultureInfo.InvariantCulture);
+
         // get a post from the database based on the slug submitted
-        return await Context.Posts
-            .Where(p => p.Slug == slug)
+        var thePosts = await Context.Posts
+            .AsNoTracking()
+            .Where(p => p.Slug == slug )
             .Select(p => (Post)p)
-            .FirstOrDefaultAsync();
+            .ToArrayAsync();
+		
+        return thePosts.FirstOrDefault(p => 
+            p.PublishedDate.UtcDateTime.Date == theDate.UtcDateTime.Date);
     }
 
     public async Task<IEnumerable<Post>> GetPosts()
