@@ -7,7 +7,7 @@ namespace SharpSiteClone.Abstractions;
 /// </summary>
 public class Post
 {
-    [Key, Required]
+    [Key, Required, MaxLength(300)]
     public required string Slug { get; set; } = String.Empty;
     
     [Required, MaxLength(200)]
@@ -22,4 +22,16 @@ public class Post
     /// <value></value>
     [Required]
     public required DateTimeOffset PublishedDate { get; set; } = DateTimeOffset.MaxValue;
+    
+    public static string GetSlug(string title)
+    {
+        var slug = title.ToLower().Replace(" ", "-");
+        slug = System.Web.HttpUtility.UrlEncode(slug);
+        return slug;
+    }
+
+    public Uri ToUrl()
+    {
+        return new Uri($"/{PublishedDate.UtcDateTime:yyyyMMdd}/{Slug}", UriKind.Relative);
+    }
 }

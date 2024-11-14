@@ -8,8 +8,12 @@ public static class PostgresExtensions
     {
         var dbServer = builder.AddPostgres("database")
             .WithDataVolume($"{dbName}-data")
-            .WithPgAdmin(c => c.WithLifetime(ContainerLifetime.Persistent))
-            .WithLifetime(ContainerLifetime.Persistent);
+            .WithLifetime(ContainerLifetime.Persistent)
+            .WithPgAdmin(config =>
+            {
+                config.WithImageTag("latest");
+                config.WithLifetime(ContainerLifetime.Persistent);
+            });
 
         // create the db in postgres
         var db = dbServer.AddDatabase(dbName);

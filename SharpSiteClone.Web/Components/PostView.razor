@@ -1,0 +1,7 @@
+﻿<h2><a href="/post/@Item.Slug">@Item.Title</a></h2>
+<h4>@Item.PublishedDate.LocalDateTime.ToShortDateString()</h4>
+
+@code {
+    [Parameter, EditorRequired] 
+    public required Post Item { get; set; }
+}

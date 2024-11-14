@@ -25,7 +25,8 @@ namespace SharpSiteClone.Data.Postgres.Migrations
             modelBuilder.Entity("SharpSiteClone.Data.Postgres.PgPost", b =>
                 {
                     b.Property<string>("Slug")
-                        .HasColumnType("text");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -36,8 +37,8 @@ namespace SharpSiteClone.Data.Postgres.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Slug");
 
