@@ -1,0 +1,33 @@
+﻿@attribute [Route(RouteValues.AdminPostList)]
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject IPostRepository PostService;
+
+<PageTitle>Posts</PageTitle>
+
+<h1>Posts</h1>
+
+@if (Posts is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <QuickGrid Items="@GridPosts" style="width: 100%">
+        <TemplateColumn Title="Title">
+            <a href="@($"/admin/post{context.ToUrl()}")">@context.Title</a>
+        </TemplateColumn>
+        <PropertyColumn Property="@(p => p.PublishedDate.ToLocalTime())"
+                        Format="g"
+                        Title="Published Date" />
+    </QuickGrid>
+}
+
+@code {
+    private IEnumerable<Post>? Posts { get; set; }
+    private IQueryable<Post>? GridPosts => Posts?.AsQueryable();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await PostService.GetPosts();
+    }
+}

@@ -1,4 +1,5 @@
-﻿@page "/post/{slug?}"
+﻿@* @page "/admin/post/{urldate:int?}/{slug?}" *@
+@attribute [Route(RouteValues.AdminPostEdit)]
 @inject IPostRepository PostService;
 @inject NavigationManager NavManager
 @rendermode InteractiveServer
@@ -41,11 +42,12 @@
 
 @code {
     [Parameter] public string? Slug { get; set; }
+    [Parameter] public int? UrlDate { get; set; }
     private Post? Post { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Post = (await PostService.GetPost("", Slug ?? string.Empty)) ?? new Post() {
+        Post = (await PostService.GetPost(UrlDate?.ToString() ?? string.Empty, Slug ?? string.Empty)) ?? new Post() {
             Slug= string.Empty,
             Content = string.Empty,
             Title = string.Empty,
@@ -59,12 +61,12 @@
         {
             Post.Slug = Post.GetSlug(Post.Title); 
             await PostService.AddPost(Post);
-            NavManager.NavigateTo("/");
+            NavManager.NavigateTo(RouteValues.AdminPostList);
         }
         else
         {
             await PostService.UpdatePost(Post);
-            NavManager.NavigateTo("/");
+            NavManager.NavigateTo(RouteValues.AdminPostList);
         }
     }
 }

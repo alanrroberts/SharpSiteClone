@@ -8,7 +8,7 @@ namespace SharpSiteClone.Data.Postgres;
 
 public class PgPostRepository(PgContext Context) : IPostRepository
 {
-    public async Task<Post?> GetPost(string dateString, string slug)
+    public async Task<Post?> GetPost(string? dateString, string? slug)
     {
 
         if (string.IsNullOrEmpty(dateString) || string.IsNullOrEmpty(slug))
@@ -32,7 +32,7 @@ public class PgPostRepository(PgContext Context) : IPostRepository
     public async Task<IEnumerable<Post>> GetPosts()
     {
         // get all posts from the database
-        var posts = await Context.Posts.ToArrayAsync();
+        var posts = await Context.Posts.AsNoTracking().ToArrayAsync();
         return posts.Select(p => (Post)p);
     }
 
