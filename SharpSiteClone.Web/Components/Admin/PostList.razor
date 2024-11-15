@@ -12,6 +12,8 @@
 }
 else
 {
+    <a href="/admin/post">New Post</a>
+    
     <QuickGrid Items="@GridPosts" style="width: 100%">
         <TemplateColumn Title="Title">
             <a href="@($"/admin/post{context.ToUrl()}")">@context.Title</a>
